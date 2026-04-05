@@ -1,0 +1,327 @@
+# ============================================================
+# TỰ MINH AGI - TASK & WORKFLOW BLUEPRINT SCHEMA
+# Phiên bản: 1.0.0
+# Triết lý: "Tâm là gốc, Trí là hoa, Tiến hóa là quả"
+# ============================================================
+
+blueprint_metadata:
+  version: "1.0.0"
+  agent_name: "Lucian (Tự Minh)"
+  core_model: "TuminhAGI_G4"
+  philosophy: "Tâm là gốc, Trí là hoa, Tiến hóa là quả"
+  architecture: "Event-Driven Multi-Agent Workflow"
+
+# ============================================================
+# ĐỊNH NGHĨA CÁC LOẠI TASK (Task Types)
+# ============================================================
+task_types:
+  
+  # 1. RAG Query Task - Truy vấn tri thức nội bộ
+  rag_query:
+    description: "Tìm kiếm và truy xuất thông tin từ knowledge base nội bộ"
+    required_inputs:
+      - query: 
+          type: string
+          description: "Câu hỏi hoặc từ khóa cần tìm"
+      - project_folder:
+          type: string
+          description: "Đường dẫn folder dự án (nếu có)"
+          optional: true
+    outputs:
+      - relevant_chunks:
+          type: list
+          description: "Danh sách các đoạn văn bản liên quan"
+      - sources:
+          type: list
+          description: "Nguồn file gốc"
+    modules_used:
+      - "Cerebro-RAG 2.2"
+    
+  # 2. Web Search Task - Tìm kiếm thông tin trên web
+  web_search:
+    description: "Tìm kiếm thông tin bổ trợ từ internet"
+    required_inputs:
+      - query:
+          type: string
+          description: "Từ khóa tìm kiếm"
+      - max_results:
+          type: integer
+          default: 5
+    outputs:
+      - search_results:
+          type: list
+          description: "Kết quả tìm kiếm với URL và snippet"
+    modules_used:
+      - "Thiên Lý Nhãn 5.2"
+  
+  # 3. Code Analysis Task - Phân tích mã nguồn
+  code_analysis:
+    description: "Phân tích cấu trúc và logic của code"
+    required_inputs:
+      - file_path:
+          type: string
+          description: "Đường dẫn file code cần phân tích"
+      - analysis_type:
+          type: enum
+          values: ["structure", "bugs", "optimization", "documentation"]
+    outputs:
+      - analysis_report:
+          type: dict
+          description: "Báo cáo phân tích chi tiết"
+    modules_used:
+      - "Cerebro-RAG 2.2"
+      - "TuminhAGI_G4"
+  
+  # 4. Multimodal Task - Xử lý hình ảnh/âm thanh
+  multimodal_analysis:
+    description: "Phân tích dữ liệu hình ảnh hoặc âm thanh"
+    required_inputs:
+      - media_path:
+          type: string
+          description: "Đường dẫn file media"
+      - media_type:
+          type: enum
+          values: ["image", "audio"]
+      - analysis_prompt:
+          type: string
+          description: "Yêu cầu phân tích cụ thể"
+    outputs:
+      - analysis_result:
+          type: string
+          description: "Kết quả phân tích"
+    modules_used:
+      - "TuminhAGI_G4"
+  
+  # 5. Document Processing - Xử lý PDF và tài liệu
+  document_processing:
+    description: "Đọc và xử lý file PDF, văn bản dài"
+    required_inputs:
+      - document_path:
+          type: string
+      - processing_type:
+          type: enum
+          values: ["extract", "summarize", "index", "qa"]
+    outputs:
+      - processed_content:
+          type: string
+      - metadata:
+          type: dict
+    modules_used:
+      - "Cerebro-RAG 2.2"
+
+# ============================================================
+# WORKFLOW TEMPLATES (Quy trình làm việc mẫu)
+# ============================================================
+workflow_templates:
+  
+  # Workflow 1: Phân tích dự án toàn diện
+  full_project_analysis:
+    name: "Phân tích toàn diện dự án"
+    description: "Index toàn bộ code, tìm kiếm web bổ trợ, và tạo báo cáo"
+    steps:
+      - step_1:
+          task_type: "rag_query"
+          name: "Index project folder"
+          inputs:
+            project_folder: "${input.project_path}"
+            query: "*"  # Index all
+          next: "step_2"
+      
+      - step_2:
+          task_type: "code_analysis"
+          name: "Phân tích cấu trúc code"
+          inputs:
+            file_path: "${step_1.sources}"
+            analysis_type: "structure"
+          next: "step_3"
+      
+      - step_3:
+          task_type: "web_search"
+          name: "Tìm kiếm best practices"
+          inputs:
+            query: "${step_2.analysis_report.tech_stack} best practices"
+            max_results: 3
+          next: "final"
+      
+      - final:
+          task_type: "custom"
+          name: "Tổng hợp báo cáo"
+          action: "generate_report"
+          inputs:
+            rag_data: "${step_1.relevant_chunks}"
+            code_analysis: "${step_2.analysis_report}"
+            web_insights: "${step_3.search_results}"
+  
+  # Workflow 2: Smart Q&A với context tối đa
+  smart_qa:
+    name: "Hỏi đáp thông minh với RAG + Web"
+    description: "Trả lời câu hỏi kết hợp tri thức nội bộ và web"
+    steps:
+      - step_1:
+          task_type: "rag_query"
+          name: "Tìm kiếm nội bộ"
+          inputs:
+            query: "${input.question}"
+            project_folder: "${input.project_folder}"
+          condition: "if step_1.relevant_chunks.length < 3 then step_2 else step_3"
+      
+      - step_2:
+          task_type: "web_search"
+          name: "Bổ sung từ web"
+          inputs:
+            query: "${input.question}"
+            max_results: 5
+          next: "step_3"
+      
+      - step_3:
+          task_type: "custom"
+          name: "Tổng hợp câu trả lời"
+          action: "synthesize_answer"
+          inputs:
+            internal_knowledge: "${step_1.relevant_chunks}"
+            external_knowledge: "${step_2.search_results}"
+            original_question: "${input.question}"
+  
+  # Workflow 3: Code Review tự động
+  automated_code_review:
+    name: "Review code tự động"
+    steps:
+      - step_1:
+          task_type: "code_analysis"
+          inputs:
+            file_path: "${input.file_path}"
+            analysis_type: "bugs"
+          next: "step_2"
+      
+      - step_2:
+          task_type: "web_search"
+          inputs:
+            query: "${step_1.analysis_report.language} common pitfalls"
+          next: "final"
+      
+      - final:
+          task_type: "custom"
+          action: "generate_review_report"
+
+# ============================================================
+# EXECUTION POLICIES (Chính sách thực thi)
+# ============================================================
+execution_policies:
+  
+  # Retry logic
+  retry:
+    max_attempts: 3
+    backoff_strategy: "exponential"
+    retry_on_errors:
+      - "NetworkError"
+      - "TimeoutError"
+      - "RateLimitError"
+  
+  # Timeout settings
+  timeouts:
+    rag_query: 30  # seconds
+    web_search: 20
+    code_analysis: 60
+    multimodal_analysis: 45
+    document_processing: 90
+  
+  # Caching
+  cache:
+    enabled: true
+    ttl: 3600  # 1 hour
+    cache_types:
+      - "rag_query"
+      - "web_search"
+  
+  # Logging
+  logging:
+    level: "INFO"
+    format: "json"
+    output: "./logs/tuminh_agi.log"
+    include_timestamps: true
+    track_performance: true
+
+# ============================================================
+# AGENT PERSONAS (Định nghĩa các Agent phụ trợ)
+# ============================================================
+agent_personas:
+  
+  planner:
+    name: "Kế Hoạch Gia"
+    role: "Lập kế hoạch workflow và phân tích dependency"
+    capabilities:
+      - "Parse user intent"
+      - "Select appropriate workflow"
+      - "Estimate execution time"
+  
+  executor:
+    name: "Chấp Hành Viên"
+    role: "Thực thi các task theo workflow"
+    capabilities:
+      - "Run RAG queries"
+      - "Execute web searches"
+      - "Manage task queue"
+  
+  validator:
+    name: "Kiểm Tra Viên"
+    role: "Kiểm tra chất lượng output"
+    capabilities:
+      - "Validate output format"
+      - "Check information accuracy"
+      - "Trigger retry if needed"
+  
+  synthesizer:
+    name: "Tổng Hợp Gia"
+    role: "Tổng hợp kết quả từ nhiều nguồn"
+    capabilities:
+      - "Merge RAG + Web results"
+      - "Remove duplicates"
+      - "Generate final answer"
+
+# ============================================================
+# MONITORING & METRICS (Giám sát và đo lường)
+# ============================================================
+monitoring:
+  
+  metrics_to_track:
+    - task_completion_rate
+    - average_response_time
+    - rag_hit_rate
+    - web_search_frequency
+    - error_rate_by_task_type
+  
+  alerts:
+    - condition: "error_rate > 0.1"
+      action: "notify_admin"
+    - condition: "response_time > 60"
+      action: "log_warning"
+  
+  dashboards:
+    - name: "Task Performance"
+      widgets:
+        - "Task queue status"
+        - "Success/failure ratio"
+        - "Average processing time by task type"
+
+# ============================================================
+# EXTENSION POINTS (Điểm mở rộng)
+# ============================================================
+extensions:
+  
+  custom_task_types:
+    enabled: true
+    location: "./blueprints/custom_tasks/"
+  
+  plugin_system:
+    enabled: true
+    plugin_directory: "./plugins/"
+    auto_load: true
+  
+  external_integrations:
+    - name: "Telegram Bot"
+      enabled: false
+      config_path: "./config/telegram.yaml"
+    
+    - name: "Discord Bot"
+      enabled: false
+      config_path: "./config/discord.yaml"

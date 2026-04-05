@@ -1,0 +1,18 @@
+gradio
+ollama
+langchain
+langchain-community
+langchain-ollama
+chromadb
+pypdf
+duckduckgo-search
+torch
+transformers
+accelerate
+bitsandbytes
+sentencepiece
+protobuf
+Pillow
+python-dotenv
+pyyaml
+# Ghi chú: Một số thư viện như torch/cuda có thể cần cài đặt riêng biệt qua cấu hình trong setup_gemma4.py

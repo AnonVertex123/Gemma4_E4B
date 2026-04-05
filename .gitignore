@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Environments
+venv/
+.venv/
+env/
+.env
+
+# Project Specific
+models/
+chroma_db/
+knowledge_base/
+chat_history.json
+rag_metadata.json
+node_modules/
+.next/
+dist/
+build/
+out/
+
+# Temporary & Logs
+*.log
+tmp/
+.ipynb_checkpoints/
+
+# Scripts
+upload_to_github.ps1

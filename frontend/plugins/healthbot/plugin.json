@@ -1,0 +1,11 @@
+{
+  "id": "healthbot",
+  "name": "Health AI",
+  "version": "1.0.0",
+  "icon": "🏥",
+  "entry": "index.tsx",
+  "permissions": ["chat", "memory", "user_profile", "diagnosis"],
+  "routes": [{ "path": "/health", "name": "Health Dashboard" }],
+  "capabilities": ["chat", "rag", "diagnosis"],
+  "tier": "premium"
+}

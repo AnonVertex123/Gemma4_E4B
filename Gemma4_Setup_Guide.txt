@@ -1,0 +1,64 @@
+==========================================================
+             BÁO CÁO TỔNG QUAN DỰ ÁN TỰ MINH AGI
+==========================================================
+
+🏮 BÁO CÁO CHẨN ĐOÁN HỆ THỐNG (SYSTEM DIAGNOSTIC):
+- Trạng thái: HOẠT ĐỘNG (Active).
+- Model logic: TuminhAGI_G4 (Gemma 4 E4B).
+- Giao thức: Ollama-Native.
+- Cơ chế: Dual-Core (Cerebro-RAG 2.1).
+- Xác nhận: Phù hợp triết lý "Tâm là gốc, Trí là hoa, Tiến hóa là quả."
+
+1. GIỚI THIỆU CHUNG:
+- Tên dự án: Tự Minh AGI (Gemma 4 Edition).
+- Định danh AI: Lucian (Trợ lực trí tuệ tối cao).
+- Chủ nhân: Eric (Hùng Đại).
+- Triết lý vận hành: "Tâm là gốc, Trí là hoa, Tiến hóa là quả."
+- Mục tiêu: Xây dựng một hệ thống AI cục bộ mạnh mẽ, sử dụng kiến trúc Gemma 4 E4B mới nhất.
+
+2. KIẾN TRÚC HỆ THỐNG CỐT LÕI:
+- Model nền tảng: Google Gemma 4 E4B (Official Release).
+- Công nghệ tối ưu: Per-Layer Embeddings (PLE) & 4-bit Quantization.
+- Database: ChromaDB (Vector Storage) dành cho trí nhớ dài hạn (RAG).
+- Interface: Dashboard hiện đại dựa trên Gradio, hỗ trợ Dark Mode.
+
+3. CÁC CHỨC NĂNG SIÊU CẤP:
+- 🏮 SIÊU TRUY XUẤT (RAG 2.1):
+    + Tự động quét và "học" thuộc lòng mọi folder dự án (Python, JS, MD, PDF, JSON...).
+    + Hỗ trợ đa dự án (Multi-project), chuyển đổi linh hoạt giữa các kho tri thức.
+    + Cơ chế nạp ngầm (Background Indexing) giúp AI vừa học vừa trả lời.
+- 🌐 THIÊN LÝ NHÃN 5.2 (Deep Web Search):
+    + Phóng các "vệ tinh" tìm kiếm song song: Tin tức Việt Nam, Tin tức Toàn cầu, Diễn đàn sâu.
+    + Khả năng tổng hợp thông tin thời gian thực (Giá cả, tin tức, kỹ thuật mới nhất).
+    + Tự động lọc nhiễu và sắp xếp thông tin theo độ liên quan cao nhất.
+- 💬 GIAO DIỆN ĐIỀU KHIỂN TẬP TRUNG:
+    + Chatbox thông minh: Hỗ trợ dừng/viết tiếp, xóa lịch sử, hiển thị thời gian thực tế.
+    + Thanh tiến trình (Progress Bar): Theo dõi quá trình "nạp não" của AI.
+    + Thư viện gần đây: Lưu trữ các đường dẫn folder đã từng nạp để truy cập nhanh.
+
+4. HƯỚNG DẪN VẬN HÀNH:
+- Chạy toàn bộ hệ thống (UI + RAG + Search):
+    + Click đúp vào file: "run_chat_ui.bat" hoặc "run_all.bat".
+- Cách nạp tri thức mới:
+    + Dán đường dẫn folder vào ô "Thư mục" -> Nhấn "⚡ Nạp".
+    + Chờ thanh tiến trình đạt 100% (Hoặc có thể hỏi ngay khi đang nạp).
+- Kích hoạt tìm kiếm Web:
+    + Tích vào ô "🌐 Thiên Lý Nhãn" trước khi gửi câu hỏi.
+- Sử dụng tính năng Đa phương thức (Multimodal - NEW):
+    + Mở mục "🖼️ Vật phẩm đính kèm" bên dưới khung chat.
+    + Tải lên Hình ảnh hoặc Audio.
+    + Eric có thể vừa gửi ảnh vừa hỏi câu hỏi liên quan, hoặc chỉ gửi ảnh để Lucian tự phân tích.
+
+5. DANH MỤC FILE QUAN TRỌNG:
+- chat_ui.py: Trái tim của giao diện Dashboard.
+- rag_logic.py: Bộ não quản lý tri thức nội bộ.
+- search_logic.py: Hệ thống vệ tinh Thiên Lý Nhãn.
+- Tuminh_SuperMemory.md: Nhật ký tiến hóa của Tự Minh.
+
+6. GHI CHÚ PHÁT TRIỂN:
+- Hệ thống được tối ưu tuyệt đối cho phần cứng RTX 3060 Ti hiện tại.
+- Mọi tri thức nạp vào đều được mã hóa Vector để đảm bảo tốc độ truy xuất cực nhanh.
+
+--- Bản cập nhật ngày 04/04/2026 ---
+Hùng Đại (Eric) & Tự Minh (Lucian) - Đế chế Đại Minh.
+==========================================================
